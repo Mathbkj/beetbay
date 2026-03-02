@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./styles/splide/splide.min.css">
+    <link rel="shortcut icon" href="./assets/logo.svg">
+    <title>BeatBay | Discover</title>
+</head>
+
+<body class="manrope">
+    <aside class="sidebar left">
+        <img width="123" height="48" src="./assets/logo.svg" />
+        <ul class="font-semibold">
+            <li><a href="/index.html"><i class="fa-solid fa-home"></i>Home</a></li>
+            <li><a aria-current="page" href="/discover.html"><i class="fa-solid fa-compass"></i>Discover</a></li>
+            <li><a href="/radio"><i class="fa-solid fa-radio"></i>Radio</a></li>
+            <li><a href="/albums"><i class="fa-solid fa-music"></i>Albums</a></li>
+            <li><a href="/podcast"><i class="fa-solid fa-microphone"></i>Podcast</a></li>
+        </ul>
+        <h2 class="title">LIBRARY</h2>
+        <ul class="font-medium">
+            <li><a href="/recently-added"><i class="fa-solid fa-clock"></i>Recently Added</a></li>
+            <li><a href="/favorite-songs"><i class="fa-solid fa-star"></i>Favorite Songs</a></li>
+            <li><a href="/local-files"><i class="fa-solid fa-folder"></i>Local Files</a></li>
+        </ul>
+        <h2 class="title">PLAYLIST<i class="fa-solid fa-plus"></i></h2>
+        <ul class="font-medium">
+            <li><a href="/playlist/1"><i class="fa-solid fa-list"></i>My Playlist #1</a></li>
+            <li><a href="/playlist/2"><i class="fa-solid fa-list"></i>My Playlist #2</a></li>
+            <li><a href="/playlist/3"><i class="fa-solid fa-list"></i>My Playlist #3</a></li>
+        </ul>
+        <div>
+            <button class="logout-btn">Log Out</button>
+        </div>
+    </aside>
+
+    <main>
+        <header id="top_navigation">
+            <div id="navigation">
+                <div id="popular_artist">
+                    <div id="back"><i class="fa-solid fa-arrow-left"></i></div>
+                    <div id="info">
+                        <span class="font-semibold">Home</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span class="font-semibold">Discover</span>
+                    </div>
+                </div>
+                <div id="search_notification">
+                    <div id="search_bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" class="search" placeholder="Search for songs, artists, albums..." />
+                    </div>
+                    <div id="notification">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="banner_artist" class="relative">
+            <div id="artist" class="absolute">
+                <img width="351" height="318" src="./assets/artist-2.png" alt="Artist Two" />
+            </div>
+            <div id="detail_banner">
+                <div id="info">
+                    <div id="verified_artist">
+                        <div id="verified">
+                            <img src="./assets/verified.svg" />
+                            <span>Featured Playlist</span>
+                        </div>
+                        <h2>Discover Weekly</h2>
+                    </div>
+                    <div id="monthly-listening">
+                        <i class="fa-solid fa-headphones"></i>
+                        <span>Fresh tracks picked for you</span>
+                    </div>
+                </div>
+                <div id="button">
+                    <button id="button_play">PLAY</button>
+                    <button id="button_follow">Following</button>
+                </div>
+            </div>
+            <div id="background" class="absolute">
+                <img src="./assets/bg-hero.png" alt="Background Hero" />
+            </div>
+        </section>
+
+        <section id="popular_releases">
+            <div id="detail_releases">
+                <div id="popular_album"></div>
+                <div id="text">
+                    <h1>Discover Releases</h1>
+                    <button class="text-all">See All</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="popular_songs">
+            <div id="detail_songs">
+                <h2 class="font-bold">Songs For You</h2>
+                <ul id="top_songs"></ul>
+            </div>
+        </section>
+    </main>
+
+    <footer></footer>
+
+    <aside class="sidebar right">
+        <section id="account_profile">
+            <div id="detail">
+                <img width="48" height="48" src="./assets/person.png" />
+                <div id="header">
+                    <p class="font-semibold">James Rodriguez</p>
+                    <span class="font-normal">Premium | ⭐</span>
+                </div>
+            </div>
+            <i class="fa-solid fa-angle-down"></i>
+        </section>
+
+        <section class="splide" aria-label="Recommended Artists For You">
+            <div class="splide__track">
+                <ul id="detail_2" class="splide__list">
+                    <li class="splide__slide">
+                        <div class="artist-img relative">
+                            <img width="234" height="234" src="./assets/artist-1.png" alt="James Arthur" />
+                            <div class="caption absolute">
+                                <span>James Arthur</span>
+                                <span>Artist</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="splide__slide">
+                        <div class="artist-img relative">
+                            <img width="234" height="234" src="./assets/cover-3.png" alt="Meghan Trainor" />
+                            <div class="caption absolute">
+                                <span>Meghan Trainor</span>
+                                <span>Artist</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="splide__slide">
+                        <div class="artist-img relative">
+                            <img width="234" height="234" src="./assets/cover-2.png" alt="Unknown Artist" />
+                            <div class="caption absolute">
+                                <span>Unknown Artist</span>
+                                <span>Artist</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="recent_played">
+            <div id="recent">
+                <div id="recent_played_header">
+                    <b>Recently Played</b>
+                    <button class="font-semibold text-all">See All</button>
+                </div>
+                <div id="recent_list"></div>
+            </div>
+        </section>
+    </aside>
+
+    <script src="./scripts/populate.js" type="module"></script>
+    <script src="./scripts/splide-4.1.3/dist/js/splide.min.js"></script>
+    <script src="./scripts/slider.js"></script>
+    <script src="./scripts/search.js"></script>
+    <script src="./scripts/setSelectedMusic.js" type="module" defer></script>
+</body>
+
+</html>

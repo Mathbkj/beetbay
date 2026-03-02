@@ -1,0 +1,818 @@
+html {
+    height: 100%;
+}
+
+:root {
+    font-size: 4px;
+    --primary: #1db954;
+    --light: #b9e9ca;
+    --lighter: #ddf5e5;
+    --dark: #121212;
+    --gray: #dedede;
+}
+
+.manrope {
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-normal {
+    font-weight: 400;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box !important;
+}
+
+body {
+    font-size: 4rem;
+    position: relative;
+    width: 100vw;
+    min-height: 100%;
+    overflow-x:hidden;
+}
+
+h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--gray);
+}
+
+ul {
+    list-style: none;
+}
+
+li:has(a) {
+    height: 48px;
+}
+
+a {
+    display: flex;
+    gap: 4rem;
+    text-decoration: none;
+    padding: 2.5rem;
+    color: white;
+    filter: brightness(.5);
+
+    &>i {
+        color: var(--primary);
+    }
+
+    &[aria-current="page"] {
+        filter: brightness(1);
+        background-color: rgba(255, 255, 255, .05);
+        border-right: 6px solid var(--primary);
+    }
+
+    &:hover {
+        filter: brightness(1);
+    }
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+    place-items: center;
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+    margin-left: 270px;
+    margin-right: 270px;
+    gap: 6rem;
+    width: calc(100vw - 540px);
+}
+
+span {
+    font-size: 3rem;
+}
+
+main header {
+    display: flex;
+    justify-content: space-between;
+}
+
+input {
+    background-color: transparent;
+    color: white;
+    outline: none;
+    border: none;
+}
+
+button {
+    background:transparent;
+    border:none;
+    outline:none;
+    appearance:none;
+    text-align: center;
+
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+}
+footer{
+    position:fixed;
+    color:white;
+    background-color:black;
+    z-index:11;
+    bottom:0;
+    width:100%;
+}
+footer section.footer-container{
+    width:100%;
+    position:relative;
+}
+.footer-container #bar_playtime{
+    position:absolute;
+    height:.4rem;
+    width:100%;
+    background:linear-gradient(to right,var(--primary) 0%,var(--gray) 0%);
+    accent-color:var(--primary);
+    appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
+    border:none;
+    border-radius:99rem;
+    outline:none;
+}
+
+.footer-container #bar_playtime::-webkit-slider-runnable-track{
+    height:.4rem;
+    background:transparent;
+    border-radius:99rem;
+}
+
+.footer-container #bar_playtime::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:1rem;
+    height:1rem;
+    border-radius:50%;
+    background:var(--primary);
+    margin-top:-0.3rem;
+    border:none;
+}
+
+.footer-container #bar_playtime::-moz-range-track{
+    height:.4rem;
+    background:transparent;
+    border-radius:99rem;
+}
+
+.footer-container #bar_playtime::-moz-range-thumb{
+    width:1rem;
+    height:1rem;
+    border-radius:50%;
+    background:var(--primary);
+    border:none;
+}
+
+.footer-container #detail_3{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+#detail_3 #artist{
+    display:flex;
+    gap:8rem;
+    justify-content:center;
+    align-items:center;
+}
+#artist #detail_4{
+    display:flex;
+    gap:4rem;
+    justify-content:center;
+    align-items:center;
+}
+#detail_4 img{
+    border-radius:3rem;
+}
+#detail_4 #info_2{
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+#detail_3 {
+    display:flex;
+    gap:6rem;
+    justify-content:center;
+    padding:5rem 8rem;
+    align-items:center;
+}
+#detail_3 button :not(:disabled,.fa-pause){
+    color:white;
+}
+#detail_3 #play{
+    display:flex;
+    gap:6rem;
+    justify-content:center;
+    align-items:center;
+}
+#detail_3 #sound{
+    display:flex;
+    gap:6rem;
+    justify-content:center;
+    align-items:center;
+}
+#sound #sound_inner{
+    display:flex;
+    gap:8rem;
+    justify-content:center;
+    align-items:center;
+}
+#sound_inner #bar_sound{
+    display:flex;
+    gap:3rem;
+    justify-content:center;
+    align-items:center;
+}
+button .fa-pause{
+    background-color:white;
+    padding:2rem;
+    border-radius:100%;
+}   
+.title {
+    text-transform: uppercase;
+}
+.fa-heart:active{
+    color: var(--primary);
+}
+main #top_navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#top_navigation #navigation {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#navigation #popular_artist {
+    display: inherit;
+    gap: 6rem;
+    align-items: inherit;
+    justify-content: flex-start;
+}
+
+#popular_artist #back {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 3.5rem;
+}
+
+#popular_artist #info :first-child {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 3.5rem;
+}
+
+#popular_artist #info :last-child {
+    font-size: 3.5rem;
+}
+
+#popular_artist #info {
+    display: inherit;
+    gap: 2rem;
+}
+
+#navigation #search_notification {
+    display: inherit;
+    gap: 6rem;
+    align-items: inherit;
+}
+
+
+#search_notification #search_bar {
+    display: inherit;
+    gap: 3rem;
+    padding: 3rem 4rem;
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 12px;
+    align-items: inherit;
+}
+
+#search_bar i {
+    color: rgba(255, 255, 255, .5);
+}
+
+#search_notification #notification {
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 12px;
+    padding: 3.5rem;
+}
+
+section#banner_artist {
+    width: 808px;
+    border-radius: 16px;
+    height: 295px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden !important;
+}
+
+#banner_artist #artist {
+    z-index: 1;
+    top: 20px;
+    right: 10px;
+}
+
+#banner_artist #background {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#banner_artist #background img {
+    width: inherit;
+    height: inherit;
+}
+
+#banner_artist #detail_banner {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10rem;
+    gap: 8rem;
+}
+
+#detail_banner #info {
+    display: inherit;
+    flex-direction: inherit;
+    gap: 4rem;
+}
+
+#info #verified_artist {
+    display: inherit;
+    flex-direction: inherit;
+    gap: 1rem;
+}
+
+#info #montlhy_listening {
+    display: flex;
+    gap: 3rem;
+}
+
+#verified_artist h2 {
+    font-size: 12rem;
+    color: white !important;
+}
+
+#verified_artist #verified {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+#banner_artist #button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+#button :first-child {
+    background-color: var(--primary);
+    color: white;
+    padding: 3.5rem 6rem;
+    border-radius: 44px;
+    height: 100%;
+}
+
+#button :last-child {
+    background-color: transparent;
+    color: white;
+    padding: 3.5rem 6rem;
+    outline: 1px solid white;
+    width: 178px;
+    border-radius: 44px;
+    height: 100%;
+}
+
+#banner_artist #artist>img {
+    object-fit: cover;
+    width: 351px;
+    height: 318px;
+    display: block;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    border-radius: 16px;
+    clip-path: inset(0 round 16px);
+}
+
+#banner_artist #artist>img[src$="artist-2.png"] {
+    overflow: hidden;
+    clip-path: inset(0 round 16px);
+}
+
+#artist #info #verified_artist {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#verified_artist #verified {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+div #monthly-listening {
+    display: flex;
+    gap: 3rem;
+}
+
+#monthly-listening>span>span {
+    color: rgba(255, 255, 255, .4);
+}
+
+aside.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding: 8rem;
+    height: 100%;
+    width: 270px;
+    color: white;
+}
+
+.left {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--dark);
+}
+#logout .logout-btn{
+    width:100%;
+    text-align:left;
+    display:flex;
+    justify-content:space-between;
+    filter:brightness(.5);
+    padding:4rem;
+    color:white;
+    &:hover{
+        filter:brightness(1);
+        background-color:rgba(0,0,0,.1);
+    }
+}
+
+.right {
+    position: fixed;
+    right: 0;
+    top: 0;
+    gap: 9rem;
+    background-color: var(--dark);
+    max-height: 100vh;
+    overflow-y:auto;
+}
+
+section#account_profile {
+    display: flex;
+    place-content: space-between;
+    height: 48px;
+    gap: 6rem;
+    place-items: center;
+    color: white;
+}
+
+#account_profile #detail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+}
+
+#detail #header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#header span {
+    color: var(--gray) !important;
+    opacity: .8;
+}
+
+section#like_by_fans #fans_like {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+#fans_like #detail_2 {
+    display: inherit;
+    flex-direction: inherit;
+    gap: 4rem;
+}
+
+#detail_2 #fans_also_like {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &>b {
+        font-size: 4.5rem;
+    }
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+#detail_2 .artist-img {
+    border-radius: 12px;
+}
+
+#detail_2 .artist-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.artist-img .caption {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    bottom: 0;
+    z-index: 10;
+    background-color: rgba(58, 58, 58, 0.5);
+    padding: 4rem;
+    gap: 1rem;
+}
+
+.caption :first-child {
+    font-size: 3.5rem;
+}
+
+.caption :last-child {
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+button.ghost {
+    outline: none;
+    background: transparent;
+    border: none;
+    color: var(--primary);
+}
+
+
+.item:nth-child(1) {
+    left: 45%;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.item:nth-child(2) {
+    left: 55%;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.item:nth-child(3) {
+    left: 65%;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+section#recent_played #recent {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#recent #recent_played_header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    &>b {
+        font-size: 4.5rem;
+    }
+
+    &>span {
+        color: var(--primary);
+    }
+}
+
+#recent #recent_list {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+#recent_list .song {
+    display: flex;
+    gap: 4rem;
+}
+
+section#popular_releases {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#popular_releases #detail_0 {
+    width: inherit;
+}
+
+#detail_0 #detail_header {
+    width: inherit;
+    display: flex;
+    justify-content: space-around;
+}
+
+section#popular_releases #detail_releases {
+    width: 808px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6rem;
+}
+
+#detail_releases #popular_album {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+}
+
+#detail_releases #text {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-all {
+    color: var(--primary);
+
+    &:hover {
+        color: var(--lighter);
+    }
+}
+
+section#popular_songs {
+    width: 808px;
+}
+
+#popular_songs #detail_songs {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+}
+
+#detail_songs #top_songs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: fit-content;
+    gap: 4rem;
+}
+
+#top_songs .pop-song {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+}
+
+.pop-song .pop-song-inner {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pop-song-inner .pop-song-detail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6rem;
+}
+
+.pop-song-inner .pop-song-record {
+    display: flex;
+    gap: 12rem;
+}
+.pop-song-inner button{
+    background:transparent;
+    color:white;
+}
+
+.pop-song-record .duration {
+    display: flex;
+    gap: 3rem;
+}
+
+.pop-song-detail .pop-song-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+}
+
+#popular_album .album {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.album .album-cover {
+    max-width: 118px;
+    max-height: 118px;
+    border-radius: 12px;
+    overflow: hidden;
+
+}
+
+.album .album-cover img {
+    width: 100%;
+    min-height: 100%;
+}
+
+.album .content {
+    display: inherit;
+    flex-direction: column;
+    justify-content: inherit;
+    align-items: inherit;
+}
+
+.content span+span {
+    color: rgba(255, 255, 255, .4);
+}
+
+.song .detail {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    gap: 4rem;
+}
+
+.detail .album-cover img {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+}
+
+.detail .song-info {
+    display: flex;
+    width: 234px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.song-info .song-name {
+    font-size: 3.5rem;
+}
+
+.song-info .artist-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 96px;
+    display: block;
+    color: rgba(255, 255, 255, .4);
+}
+
+.song-info .when-played,
+.when-played span {
+    white-space: nowrap;
+    text-wrap: nowrap;
+}
+
+.text-ellipsis {
+    text-overflow: ellipsis;
+}

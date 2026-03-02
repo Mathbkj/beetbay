@@ -1,0 +1,80 @@
+{
+    "categories": [
+        {
+            "name": "Recently Played",
+            "files": [
+                {
+                    "cover": "./assets/cover-1.png",
+                    "title": "Perfect",
+                    "artist": "Ed Sheeran",
+                    "when": "2min ago"
+                },
+                {
+                    "cover": "./assets/cover-2.png",
+                    "title": "Roman Picisan",
+                    "artist": "Hanin Dhya, Ahmad Dhani",
+                    "when": "8min ago"
+                },
+                {
+                    "cover": "./assets/cover-3.png",
+                    "title": "Title (Deluxe)",
+                    "artist": "Meghan Trainor",
+                    "when": "2h ago"
+                },
+                {
+                    "cover": "./assets/cover-4.png",
+                    "title": "Shiver",
+                    "artist": "Ed Sheeran",
+                    "when": "6h ago"
+                },
+                {
+                    "cover": "./assets/cover-5.png",
+                    "title": "Feel Something",
+                    "artist": "Jaymes Young",
+                    "when": "11h ago"
+                },
+                {
+                    "cover": "./assets/cover-6.png",
+                    "title": "Bad Habits",
+                    "artist": "Ed Sheeran",
+                    "when": "14h ago"
+                }
+            ]
+        },
+        {
+            "name": "Popular Album",
+            "files": [
+                {
+                    "cover": "./assets/cover-1.png",
+                    "title": "Divide",
+                    "year": "2017"
+                },
+                {
+                    "cover": "./assets/cover-7.png",
+                    "title": "X",
+                    "year": "2015"
+                },
+                {
+                    "cover": "./assets/cover-8.png",
+                    "title": "No 6",
+                    "year": "2019"
+                },
+                {
+                    "cover": "./assets/cover-6.png",
+                    "title": "Equals",
+                    "year": "2021"
+                },
+                {
+                    "cover": "./assets/cover-4.png",
+                    "title": "Peru",
+                    "year": "Latest Releases"
+                },
+                {
+                    "cover": "./assets/cover-7.png",
+                    "title": "Multiply",
+                    "year": "2014"
+                }
+            ]
+        }
+    ]
+}
