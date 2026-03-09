@@ -1,7 +1,5 @@
 import "@splidejs/react-splide/css";
 import Sidebar from "../components/Sidebar";
-import { useAuth } from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
 import { formatTime, highlightText } from "../utils";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { ISong } from "../types/ISong";
@@ -167,158 +165,158 @@ export default function Dashboard() {
   }, [search]);
 
   return (
-    <div
-      ref={dashboardRef}
-      className="font-[Manrope] flex min-h-screen bg-black"
-    >
-      <Sidebar position="left" currentPage="home" />
-      <main className="flex flex-col place-content-center place-items-center bg-black text-white min-h-screen ml-67.5 mr-67.5 gap-6 w-[calc(100vw-540px)]">
-        <header className="flex justify-center items-center w-full">
-          <div className="w-full flex justify-around items-center">
-            <div className="flex gap-6 items-center justify-start">
-              <div className="bg-white/20 rounded-xl p-3.5">
-                <ArrowLeft size={18} />
-              </div>
-              <div className="flex gap-2 items-center">
-                <span className="text-white/40 text-sm font-semibold">
-                  Home
-                </span>
-                <ArrowRight size={14} className="text-white/40" />
-                <span className="text-sm font-semibold">Popular Artist</span>
-              </div>
-            </div>
-            <div className="flex gap-6 items-center">
-              <div className="flex gap-3 px-4 py-3 bg-white/10 rounded-xl items-center">
-                <Search size={18} className="text-white/50" />
-                <input
-                  type="search"
-                  placeholder="Search for songs, artists, albums..."
-                  value={search}
-                  onChange={handleSearch}
-                  className="bg-transparent text-white outline-none border-none text-xs"
-                />
-              </div>
-              <div className="bg-white/10 rounded-xl p-3.5">
-                <Bell size={18} />
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <section className="w-202 rounded-2xl h-73.75 flex justify-between items-center overflow-hidden relative">
-          <div className="absolute z-1 top-5 right-2.5">
-            <img
-              width="351"
-              height="318"
-              src="/assets/artist-2.png"
-              alt="Artist Two"
-              className="object-cover rounded-2xl"
-            />
-          </div>
-          <div className="z-1 flex flex-col px-10 gap-8">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-3">
-                  <img src="/assets/verified.svg" alt="Verified" />
-                  <span className="text-xs">Verified Artist</span>
+    <div ref={dashboardRef} className="font-[Manrope] min-h-screen bg-black">
+      <Sidebar position="left" currentPage="home">
+        <main className="flex flex-col place-content-center place-items-center bg-black text-white min-h-screen mr-67.5 gap-6 p-6">
+          <header className="flex justify-center items-center w-full">
+            <div className="w-full flex justify-around items-center">
+              <div className="flex gap-6 items-center justify-start">
+                <div className="bg-white/20 rounded-xl p-3.5">
+                  <ArrowLeft size={18} />
                 </div>
-                <h2 className="text-5xl font-bold text-white">Ed Sheeran</h2>
+                <div className="flex gap-2 items-center">
+                  <span className="text-white/40 text-sm font-semibold">
+                    Home
+                  </span>
+                  <ArrowRight size={14} className="text-white/40" />
+                  <span className="text-sm font-semibold">Popular Artist</span>
+                </div>
               </div>
-              <div className="flex gap-3">
-                <Headphones size={18} />
-                <span className="text-xs">
-                  82,756,134{" "}
-                  <span className="text-white/40">monthly listeners</span>
-                </span>
+              <div className="flex gap-6 items-center">
+                <div className="flex gap-3 px-4 py-3 bg-white/10 rounded-xl items-center">
+                  <Search size={18} className="text-white/50" />
+                  <input
+                    type="search"
+                    placeholder="Search for songs, artists, albums..."
+                    value={search}
+                    onChange={handleSearch}
+                    className="bg-transparent text-white outline-none border-none text-xs"
+                  />
+                </div>
+                <div className="bg-white/10 rounded-xl p-3.5">
+                  <Bell size={18} />
+                </div>
               </div>
             </div>
-            <div className="flex justify-center items-center gap-3">
-              <button className="bg-primary text-white px-6 py-3.5 rounded-[44px]">
-                PLAY
-              </button>
-              <button className="bg-transparent text-white px-6 py-3.5 outline outline-white w-44.5 rounded-[44px]">
-                Following
-              </button>
-            </div>
-          </div>
-          <div className="absolute z-0 w-full h-full">
-            <img
-              src="/assets/bg-hero.png"
-              alt="Background Hero"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </section>
+          </header>
 
-        <section className="flex justify-center items-center w-full">
-          <div className="w-202 flex flex-col justify-center items-center gap-6">
-            <div className="flex justify-center items-center gap-5">
-              {/* Albums will be populated here */}
+          <section className="w-202 rounded-2xl h-73.75 flex justify-between items-center overflow-hidden relative">
+            <div className="absolute z-1 top-5 right-2.5">
+              <img
+                width="351"
+                height="318"
+                src="/assets/artist-2.png"
+                alt="Artist Two"
+                className="object-cover rounded-2xl"
+              />
             </div>
-            <div className="w-full flex justify-between items-center">
-              <h1 className="text-xl font-bold">Popular Releases</h1>
-              <button className="text-primary hover:text-lighter">
-                See All
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-202">
-          <div className="flex flex-col gap-6">
-            <h2 className="font-bold text-lg">Popular Song</h2>
-            <audio ref={audioRef}>
-              <source src={currentSong?.audioSrc} />
-            </audio>
-            <ul className="flex flex-col justify-start items-start min-h-fit gap-4 list-none">
-              {songs?.map((song, index) => (
-                <li
-                  key={song.title}
-                  className="flex flex-col gap-4 relative rounded-xl"
-                >
-                  <div className="flex justify-center items-center gap-19">
-                    <div className="flex justify-center items-center gap-6">
-                      <span className="text-xs">{index + 1}</span>
-                      <div className="flex flex-row-reverse justify-center items-center gap-4">
-                        <audio>
-                          <source src={song.audioSrc} />
-                        </audio>
-                        <span className="song-title text-xs">{song.title}</span>
-                        <img
-                          width={118}
-                          height={118}
-                          src={song.imgSrc}
-                          className="song-img w-29.5 h-29.5 rounded-xl"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-center items-center gap-14">
-                      <div className="flex gap-3">
-                        <Headphones size={18} />
-                        <span className="text-xs">82,756,134</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <Clock size={18} />
-                        <span className="text-xs">00:30</span>
-                      </div>
-                      <Button size="icon" variant="destructive">
-                        <Heart />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={handleCurrentSong}
-                      >
-                        <Play size={24} />
-                      </Button>
-                    </div>
+            <div className="z-1 flex flex-col px-10 gap-8">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-3">
+                    <img src="/assets/verified.svg" alt="Verified" />
+                    <span className="text-xs">Verified Artist</span>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      </main>
+                  <h2 className="text-5xl font-bold text-white">Ed Sheeran</h2>
+                </div>
+                <div className="flex gap-3">
+                  <Headphones size={18} />
+                  <span className="text-xs">
+                    82,756,134{" "}
+                    <span className="text-white/40">monthly listeners</span>
+                  </span>
+                </div>
+              </div>
+              <div className="flex justify-center items-center gap-3">
+                <button className="bg-primary text-white px-6 py-3.5 rounded-[44px]">
+                  PLAY
+                </button>
+                <button className="bg-transparent text-white px-6 py-3.5 outline outline-white w-44.5 rounded-[44px]">
+                  Following
+                </button>
+              </div>
+            </div>
+            <div className="absolute z-0 w-full h-full">
+              <img
+                src="/assets/bg-hero.png"
+                alt="Background Hero"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </section>
+
+          <section className="flex justify-center items-center w-full">
+            <div className="w-202 flex flex-col justify-center items-center gap-6">
+              <div className="flex justify-center items-center gap-5">
+                {/* Albums will be populated here */}
+              </div>
+              <div className="w-full flex justify-between items-center">
+                <h1 className="text-xl font-bold">Popular Releases</h1>
+                <button className="text-primary hover:text-lighter">
+                  See All
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section className="w-202">
+            <div className="flex flex-col gap-6">
+              <h2 className="font-bold text-lg">Popular Song</h2>
+              <audio ref={audioRef}>
+                <source src={currentSong?.audioSrc} />
+              </audio>
+              <ul className="flex flex-col justify-start items-start min-h-fit gap-4 list-none">
+                {songs?.map((song, index) => (
+                  <li
+                    key={song.title}
+                    className="flex flex-col gap-4 relative rounded-xl"
+                  >
+                    <div className="flex justify-center items-center gap-19">
+                      <div className="flex justify-center items-center gap-6">
+                        <span className="text-xs">{index + 1}</span>
+                        <div className="flex flex-row-reverse justify-center items-center gap-4">
+                          <audio>
+                            <source src={song.audioSrc} />
+                          </audio>
+                          <span className="song-title text-xs w-40 truncate">
+                            {song.title}
+                          </span>
+                          <img
+                            width={118}
+                            height={118}
+                            src={song.imgSrc}
+                            className="song-img w-29.5 h-29.5 rounded-xl"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center gap-14">
+                        <div className="flex gap-3">
+                          <Headphones size={18} />
+                          <span className="text-xs">82,756,134</span>
+                        </div>
+                        <div className="flex gap-3">
+                          <Clock size={18} />
+                          <span className="text-xs">00:30</span>
+                        </div>
+                        <Button size="icon" variant="destructive">
+                          <Heart />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={handleCurrentSong}
+                        >
+                          <Play size={24} />
+                        </Button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        </main>
+      </Sidebar>
 
       <footer className="fixed text-white bg-black z-11 bottom-0 w-full">
         <SoundBar

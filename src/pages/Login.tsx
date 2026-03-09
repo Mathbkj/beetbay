@@ -1,4 +1,4 @@
-import { useState, useRef, useTransition, SubmitEvent } from "react";
+import { useState, useRef, useTransition, SubmitEvent, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Spinner } from "../ui/Spinner";
 import { IAPIResponse } from "../types/IAPIResponse";
@@ -53,10 +53,12 @@ export default function Login() {
     };
     startTransition(async () => await processData());
   };
-  if (user) return <Navigate to="/dashboard" replace />;
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
-    <div className="font-[Manrope] bg-dark text-white min-h-screen flex items-center justify-center p-4">
+    <div className="bg-background text-white min-h-screen flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent pointer-events-none" />
       <main className="relative w-full max-w-md">
         <section

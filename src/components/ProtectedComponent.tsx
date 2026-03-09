@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { User } from "../types/User";
+import { useEffect } from "react";
 
 export function ProtectedComponent({
   user,
@@ -8,8 +9,10 @@ export function ProtectedComponent({
   children: React.ReactNode;
   user: User | null;
 }) {
-  if (typeof window !== "undefined" && !user) {
-    return <Navigate to="/login" replace />;
-  }
+  useEffect(() => {
+    if (!user) {
+      <Navigate to="/login" replace />;
+    }
+  }, []);
   return children;
 }

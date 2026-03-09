@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Discover from "./pages/Discover";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import { useAuth } from "./hooks/useAuth";
 import { ProtectedComponent } from "./components/ProtectedComponent";
 
@@ -25,6 +26,14 @@ function App() {
           element={
             <ProtectedComponent user={user}>
               <Dashboard />
+            </ProtectedComponent>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedComponent user={user}>
+              <Profile />
             </ProtectedComponent>
           }
         />

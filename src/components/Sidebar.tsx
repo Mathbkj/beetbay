@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useAuth } from "../hooks/useAuth";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
@@ -26,10 +26,30 @@ import {
   DropdownMenuTrigger,
 } from "@/ui/DropdownMenu";
 import { Button } from "@/ui/Button";
+import { useNavigate } from "react-router-dom";
+import {
+  Sidebar as ShadcnSidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+} from "@/ui/sidebar";
+import { ReactNode } from "react";
 
 interface SidebarLeftProps {
   position: "left";
   currentPage: "home" | "discover" | "radio" | "albums" | "podcast";
+  children?: ReactNode;
 }
 
 interface SidebarRightProps {
@@ -38,157 +58,149 @@ interface SidebarRightProps {
 
 type SidebarProps = SidebarLeftProps | SidebarRightProps;
 
-export default function Sidebar(props: SidebarProps) {
-  const { logout, user } = useAuth();
+const mainNavItems = [
+  { title: "Home", url: "/dashboard", icon: Home, page: "home" },
+  { title: "Discover", url: "/discover", icon: Compass, page: "discover" },
+  { title: "Radio", url: "/radio", icon: Radio, page: "radio" },
+  { title: "Albums", url: "/albums", icon: Music, page: "albums" },
+  { title: "Podcast", url: "/podcast", icon: Mic, page: "podcast" },
+] as const;
+
+const libraryItems = [
+  { title: "Recently Added", url: "/recently-added", icon: Clock },
+  { title: "Favorite Songs", url: "/favorite-songs", icon: Star },
+  { title: "Local Files", url: "/local-files", icon: Folder },
+];
+
+const playlistItems = [
+  { title: "My Playlist #1", url: "/playlist/1", icon: List },
+  { title: "My Playlist #2", url: "/playlist/2", icon: List },
+  { title: "My Playlist #3", url: "/playlist/3", icon: List },
+];
+
+function LeftSidebarContent({
+  currentPage,
+}: {
+  currentPage: SidebarLeftProps["currentPage"];
+}) {
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     Cookies.remove("jwt_token");
     logout();
   };
 
-  if (props.position === "left") {
-    return (
-      <aside className="fixed left-0 top-0 flex flex-col gap-2.5 p-8 h-screen w-67.5 text-white z-10 bg-dark">
-        <img
-          width="123"
-          height="48"
-          src="/assets/logo.svg"
-          alt="BeatBay Logo"
-        />
-        <ul className="list-none font-semibold">
-          <li className="h-12">
-            <Link
-              to="/dashboard"
-              aria-current={props.currentPage === "home" ? "page" : undefined}
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 aria-[current=page]:brightness-100 aria-[current=page]:bg-white/5 aria-[current=page]:border-r-[6px] aria-[current=page]:border-primary [&>svg]:text-primary"
-            >
-              <Home size={18} />
-              Home
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/discover"
-              aria-current={
-                props.currentPage === "discover" ? "page" : undefined
-              }
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 aria-[current=page]:brightness-100 aria-[current=page]:bg-white/5 aria-[current=page]:border-r-[6px] aria-[current=page]:border-primary [&>svg]:text-primary"
-            >
-              <Compass size={18} />
-              Discover
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/radio"
-              aria-current={props.currentPage === "radio" ? "page" : undefined}
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 aria-[current=page]:brightness-100 aria-[current=page]:bg-white/5 aria-[current=page]:border-r-[6px] aria-[current=page]:border-primary [&>svg]:text-primary"
-            >
-              <Radio size={18} />
-              Radio
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/albums"
-              aria-current={props.currentPage === "albums" ? "page" : undefined}
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 aria-[current=page]:brightness-100 aria-[current=page]:bg-white/5 aria-[current=page]:border-r-[6px] aria-[current=page]:border-primary [&>svg]:text-primary"
-            >
-              <Music size={18} />
-              Albums
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/podcast"
-              aria-current={
-                props.currentPage === "podcast" ? "page" : undefined
-              }
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 aria-[current=page]:brightness-100 aria-[current=page]:bg-white/5 aria-[current=page]:border-r-[6px] aria-[current=page]:border-primary [&>svg]:text-primary"
-            >
-              <Mic size={18} />
-              Podcast
-            </Link>
-          </li>
-        </ul>
-        <h2 className="text-xs font-bold text-gray uppercase">LIBRARY</h2>
-        <ul className="list-none font-medium">
-          <li className="h-12">
-            <Link
-              to="/recently-added"
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 [&>svg]:text-primary"
-            >
-              <Clock size={18} />
-              Recently Added
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/favorite-songs"
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 [&>svg]:text-primary"
-            >
-              <Star size={18} />
-              Favorite Songs
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/local-files"
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 [&>svg]:text-primary"
-            >
-              <Folder size={18} />
-              Local Files
-            </Link>
-          </li>
-        </ul>
-        <h2 className="text-xs font-bold text-gray uppercase flex items-center gap-2">
-          PLAYLIST
-          <Plus size={18} className="cursor-pointer hover:text-primary" />
-        </h2>
-        <ul className="list-none font-medium">
-          <li className="h-12">
-            <Link
-              to="/playlist/1"
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 [&>svg]:text-primary"
-            >
-              <List size={18} />
-              My Playlist #1
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/playlist/2"
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 [&>svg]:text-primary"
-            >
-              <List size={18} />
-              My Playlist #2
-            </Link>
-          </li>
-          <li className="h-12">
-            <Link
-              to="/playlist/3"
-              className="flex gap-4 no-underline p-2.5 text-white brightness-50 hover:brightness-100 [&>svg]:text-primary"
-            >
-              <List size={18} />
-              My Playlist #3
-            </Link>
-          </li>
-        </ul>
-        <div className="mt-auto">
-          <button
-            className="w-full text-left flex justify-between brightness-50 p-4 text-white bg-transparent border-none hover:brightness-100 hover:bg-black/10"
-            onClick={handleLogout}
-          >
-            Log Out <LogOut size={18} />
-          </button>
+  return (
+    <ShadcnSidebar collapsible="icon" className="border-r-0">
+      <SidebarHeader className="p-4">
+        <div className="flex items-center justify-between">
+          <img
+            width="123"
+            height="48"
+            src="/assets/logo.svg"
+            alt="BeatBay Logo"
+            className="group-data-[collapsible=icon]:hidden"
+          />
+          <SidebarTrigger className="text-white hover:bg-white/10" />
         </div>
-      </aside>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarMenu>
+            {mainNavItems.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={currentPage === item.page}
+                  tooltip={item.title}
+                >
+                  <Link to={item.url}>
+                    <item.icon className="text-primary" />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Library</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {libraryItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <Link to={item.url}>
+                      <item.icon className="text-primary" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Playlist</SidebarGroupLabel>
+          <SidebarGroupAction title="Add Playlist">
+            <Plus className="text-primary hover:text-white" />
+            <span className="sr-only">Add Playlist</span>
+          </SidebarGroupAction>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {playlistItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <Link to={item.url}>
+                      <item.icon className="text-primary" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={handleLogout} tooltip="Log Out">
+              <LogOut className="text-primary" />
+              <span>Log Out</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+
+      <SidebarRail />
+    </ShadcnSidebar>
+  );
+}
+
+export default function Sidebar(props: SidebarProps) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  if (props.position === "left") {
+    if (!user) {
+      return <Navigate to="/login" replace />;
+    }
+    return (
+      <SidebarProvider>
+        <LeftSidebarContent currentPage={props.currentPage} />
+        <SidebarInset className="bg-black">{props.children}</SidebarInset>
+      </SidebarProvider>
     );
   }
 
-  // Right sidebar
+  // Right sidebar (unchanged, uses custom implementation)
   return (
-    <aside className="fixed right-0 top-0 flex flex-col gap-9 p-8 h-screen w-67.5 text-white z-10 bg-dark overflow-y-auto">
+    <aside className="fixed right-0 top-0 flex flex-col gap-9 p-8 h-screen w-67.5 text-white z-10 bg-sidebar-primary overflow-y-auto">
       <section className="flex justify-between gap-4 items-center text-white hover:bg-black/20">
         <div className="flex items-center gap-4 min-w-0">
           <img
@@ -212,9 +224,7 @@ export default function Sidebar(props: SidebarProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem
-              onSelect={() => console.log("Redirecting to user page")}
-            >
+            <DropdownMenuItem onSelect={() => navigate("/profile")}>
               <User size={24} />
               Profile
             </DropdownMenuItem>
