@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
 import {
   Home,
   Compass,
@@ -109,28 +108,6 @@ export function LeftSidebarContent() {
           <SidebarGroupContent>
             <SidebarMenu>
               {libraryItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    <Link to={item.url}>
-                      <item.icon className="text-primary" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Playlist</SidebarGroupLabel>
-          <SidebarGroupAction title="Add Playlist">
-            <Plus className="text-primary hover:text-white" />
-            <span className="sr-only">Add Playlist</span>
-          </SidebarGroupAction>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {playlistItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild tooltip={item.title}>
                     <Link to={item.url}>

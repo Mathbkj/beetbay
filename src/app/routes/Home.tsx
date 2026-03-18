@@ -1,40 +1,21 @@
 import type { Route } from "./+types/Home";
 import "@splidejs/react-splide/css";
-import Sidebar from "../components/Sidebar";
 import { formatTime, getCookiesFromReq, highlightText } from "@/lib/utils";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { ISong } from "../types/ISong";
 import {
-  ArrowLeft,
-  ArrowRight,
-  AudioLines,
-  Bell,
-  ChevronDown,
-  Clock,
-  CreditCard,
-  Headphones,
+  AudioLines, Clock, Headphones,
   Heart,
   ListMusic,
   Pause,
   Play,
-  Repeat1,
-  Search,
-  Shuffle,
+  Repeat1, Shuffle,
   StepBack,
-  StepForward,
-  User,
+  StepForward
 } from "lucide-react";
 import { Button } from "@/ui/Button";
 import { SoundBar } from "../components/SoundBar";
 import { getSongs } from "@/storage/getSongs";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/ui/DropdownMenu";
-import { useNavigate } from "react-router-dom";
 import { redirect } from "react-router";
 import { toast } from "sonner";
 
@@ -76,6 +57,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const [isHeartSelected, setIsHeartSelected] = useState<Set<number>>(
     new Set(),
   );
+  const [showAll,setShowAll] = useState(false);
 
   function handleTimeUpdate(audio: HTMLAudioElement) {
     setCurrentTime(audio.currentTime);
@@ -161,6 +143,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     });
 
     toast.success(message);
+  }
+  function toggleShowAll(){
+    setShowAll(prev => !prev);
   }
   // currentSong + isRepeating useEffect
   useEffect(() => {
@@ -283,9 +268,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             </div>
             <div className="w-full flex justify-between items-center">
               <h1 className="text-xl font-bold">Popular Releases</h1>
-              <button className="text-primary hover:text-lighter">
+              <Button onClick={toggleShowAll} className="text-primary hover:text-lighter">
                 See All
-              </button>
+              </Button>
             </div>
           </div>
         </section>
@@ -297,58 +282,69 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               <source src={currentSong?.audioSrc} />
             </audio>
             <ul className="flex flex-col justify-start items-start min-h-fit gap-4 list-none">
-              {songs?.map((song, index) => (
-                <li
-                  key={song.title}
-                  className="flex flex-col gap-4 relative rounded-xl"
-                >
-                  <div className="flex justify-center items-center gap-19">
-                    <div className="flex justify-center items-center gap-6">
-                      <span className="text-xs">{index + 1}</span>
-                      <div className="flex flex-row-reverse justify-center items-center gap-4">
-                        <audio>
-                          <source src={song.audioSrc} />
-                        </audio>
-                        <span className="song-title text-xs w-40 truncate">
-                          {song.title}
-                        </span>
-                        <img
-                          width={118}
-                          height={118}
-                          src={song.imgSrc}
-                          className="song-img w-29.5 h-29.5 rounded-xl"
-                        />
+              {(() => {
+                if (!songs) return null;
+                const midpoint = Math.ceil(songs.length / 2);
+                const firstHalf = songs.slice(0, midpoint);
+                const secondHalf = songs.slice(midpoint);
+                const renderSong = (song: ISong, index: number) => (
+                  <li
+                    key={song.title}
+                    className="flex flex-col gap-4 relative rounded-xl"
+                  >
+                    <div className="flex justify-center items-center gap-19">
+                      <div className="flex justify-center items-center gap-6">
+                        <span className="text-xs">{index + 1}</span>
+                        <div className="flex flex-row-reverse justify-center items-center gap-4">
+                          <audio>
+                            <source src={song.audioSrc} />
+                          </audio>
+                          <span className="song-title text-xs w-40 truncate">
+                            {song.title}
+                          </span>
+                          <img
+                            width={118}
+                            height={118}
+                            src={song.imgSrc}
+                            className="song-img w-29.5 h-29.5 rounded-xl"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center gap-14">
+                        <div className="flex gap-3">
+                          <Headphones size={18} />
+                          <span className="text-xs">82,756,134</span>
+                        </div>
+                        <div className="flex gap-3">
+                          <Clock size={18} />
+                          <span className="text-xs">00:30</span>
+                        </div>
+                        <Button
+                          data-favorited={isHeartSelected.has(index)}
+                          onClick={() => favoriteMusic(index)}
+                          size="icon"
+                          variant="destructive"
+                          className="group"
+                        >
+                          <Heart className="group-data-[favorited=true]:fill-red-500 group-data-[favorited=true]:animate-quick-jump transition-all" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={handleCurrentSong}
+                        >
+                          <Play size={24} />
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex justify-center items-center gap-14">
-                      <div className="flex gap-3">
-                        <Headphones size={18} />
-                        <span className="text-xs">82,756,134</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <Clock size={18} />
-                        <span className="text-xs">00:30</span>
-                      </div>
-                      <Button
-                        data-favorited={isHeartSelected.has(index)}
-                        onClick={() => favoriteMusic(index)}
-                        size="icon"
-                        variant="destructive"
-                        className="group"
-                      >
-                        <Heart className="group-data-[favorited=true]:fill-red-500 group-data-[favorited=true]:animate-quick-jump transition-all" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={handleCurrentSong}
-                      >
-                        <Play size={24} />
-                      </Button>
-                    </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+                const rendered = [
+                  ...firstHalf.map((song, idx) => renderSong(song, idx)),
+                  ...(showAll ? secondHalf.map((song, idx) => renderSong(song, idx + midpoint)) : []),
+                ];
+                return rendered;
+              })()}
             </ul>
           </div>
         </section>

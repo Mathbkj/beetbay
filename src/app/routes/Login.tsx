@@ -1,6 +1,6 @@
 import { Route } from "../routes/+types/Login";
 import { IAPIResponse } from "../types/IAPIResponse";
-import { Form, redirect } from "react-router";
+import { Form, redirect, useNavigation } from "react-router";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/ui/Button";
@@ -8,6 +8,7 @@ import { Input } from "@/ui/input";
 import { Field, FieldDescription, FieldLabel } from "@/ui/field";
 import Cookies from "js-cookie";
 import { getIsLoggedIn } from "@/storage/getIsLoggedIn";
+import { Spinner } from "@/ui/Spinner";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const isLoggedIn = getIsLoggedIn(request);
@@ -54,6 +55,9 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Login({ actionData }: Route.ComponentProps) {
+
+  const navigation = useNavigation();
+
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -113,7 +117,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
                     aria-invalid={actionData?.error ? "true" : "false"}
                     className="bg-white/5 border border-white/10 rounded-lg text-sm text-white px-4 py-3 pr-12 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-white/30"
                   />
-                  <button
+                  <Button
                     type="button"
                     onClick={() => setShowPassword((current) => !current)}
                     className="absolute inset-y-0 right-0 flex items-center justify-center px-4 text-white/50 transition-colors hover:text-white focus:outline-none focus:text-white"
@@ -127,7 +131,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
                     ) : (
                       <Eye className="h-4 w-4" aria-hidden="true" />
                     )}
-                  </button>
+                  </Button>
                 </div>
                 {actionData?.error && (
                   <FieldDescription className="group-data-invalid:text-red-500">
@@ -137,7 +141,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
               </Field>
             </div>
 
-            <Button type="submit">Sign In</Button>
+            <Button type="submit" disabled={navigation.state !== "idle"}>{navigation.state !== "idle" ? <Spinner/> : "Sign In"}</Button>
           </Form>
 
           <div className="flex items-center gap-4">

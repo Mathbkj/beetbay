@@ -1,5 +1,5 @@
 import { Route } from "../layouts/+types/sidebar";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router";
+import { NavLink, Outlet, redirect, useLocation, useNavigate } from "react-router";
 import Sidebar, { mainNavItems } from "@/components/Sidebar";
 import {
   SidebarContent,
@@ -17,10 +17,14 @@ import { ArrowLeft, ArrowRight, Bell, LogOut, Search } from "lucide-react";
 import { Button } from "@/ui/Button";
 import { useState } from "react";
 import { getUserFromServer } from "@/storage/getUserFromServer";
+import Cookies from "js-cookie";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = getUserFromServer(request);
-  return { email: user.email };
+  if(user.email === "example@example.com"){
+    return redirect("/login")
+  }
+  return { email:user.email };
 }
 
 export default function SidebarLayout({ loaderData }: Route.ComponentProps) {
@@ -47,6 +51,10 @@ export default function SidebarLayout({ loaderData }: Route.ComponentProps) {
     if (nextItem) {
       navigate(nextItem.url);
     }
+  }
+  function handleLogout(){
+    Cookies.remove("jwt_token");
+    navigate(0);
   }
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
@@ -94,7 +102,7 @@ export default function SidebarLayout({ loaderData }: Route.ComponentProps) {
           <SidebarFooter className="pb-28">
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Log Out">
+                <SidebarMenuButton onClick={handleLogout} tooltip="Log Out">
                   <LogOut className="text-primary" />
                   <span>Log Out</span>
                 </SidebarMenuButton>

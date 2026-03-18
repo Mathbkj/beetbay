@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Button } from "@/ui/Button";
 import { Input } from "@/ui/input";
 import { Field, FieldDescription, FieldLabel } from "@/ui/field";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Signup() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,15 +99,30 @@ export default function Signup() {
             <div className="flex flex-col gap-2">
               <Field data-invalid={error ? "true" : "false"} className="group">
                 <FieldLabel htmlFor="signup_password">Password</FieldLabel>
-                <Input
-                  id="signup_password"
-                  name="password"
-                  type="password"
-                  placeholder="Enter a password"
-                  required
-                  aria-invalid={error ? "true" : "false"}
-                  className="bg-white/5 border border-white/10 rounded-lg text-sm text-white px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-white/30"
-                />
+                <div className="relative">
+                  <Input
+                    id="signup_password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter a password"
+                    required
+                    aria-invalid={error ? "true" : "false"}
+                    className="bg-white/5 border border-white/10 rounded-lg text-sm text-white px-4 py-3 pr-12 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-white/30"
+                  />
+                  <Button
+                    type="button"
+                    onClick={() => setShowPassword((current) => !current)}
+                    className="absolute inset-y-0 right-0 flex items-center justify-center px-4 text-white/50 transition-colors hover:text-white focus:outline-none focus:text-white"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showPassword}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                        <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </Button>
+                </div>
               </Field>
             </div>
 
@@ -113,15 +131,30 @@ export default function Signup() {
                 <FieldLabel htmlFor="confirm_password">
                   Confirm Password
                 </FieldLabel>
-                <Input
-                  id="confirm_password"
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="Confirm your password"
-                  required
-                  aria-invalid={error ? "true" : "false"}
-                  className="bg-white/5 border border-white/10 rounded-lg text-sm text-white px-4 py-3 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-white/30"
-                />
+                <div className="relative">
+                  <Input
+                    id="confirm_password"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    required
+                    aria-invalid={error ? "true" : "false"}
+                    className="bg-white/5 border border-white/10 rounded-lg text-sm text-white px-4 py-3 pr-12 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-white/30"
+                  />
+                  <Button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((current) => !current)}
+                    className="absolute inset-y-0 right-0 flex items-center justify-center px-4 text-white/50 transition-colors hover:text-white focus:outline-none focus:text-white"
+                    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showConfirmPassword}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </Button>
+                </div>
                 {error && (
                   <FieldDescription className="group-data-invalid:text-red-500">
                     {error}

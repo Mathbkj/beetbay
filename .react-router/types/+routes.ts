@@ -14,9 +14,6 @@ type Pages = {
   "/": {
     params: {};
   };
-  "/signup": {
-    params: {};
-  };
   "/discover": {
     params: {};
   };
@@ -24,6 +21,9 @@ type Pages = {
     params: {};
   };
   "/favorites": {
+    params: {};
+  };
+  "/signup": {
     params: {};
   };
   "/login": {
@@ -34,19 +34,15 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/signup" | "/discover" | "/profile" | "/favorites" | "/login";
+    page: "/" | "/discover" | "/profile" | "/favorites" | "/signup" | "/login";
   };
   "./layouts/sidebar.tsx": {
     id: "layouts/sidebar";
-    page: "/" | "/signup" | "/discover" | "/profile" | "/favorites";
+    page: "/" | "/discover" | "/profile" | "/favorites";
   };
   "./routes/Home.tsx": {
     id: "routes/Home";
     page: "/";
-  };
-  "./routes/Signup.tsx": {
-    id: "routes/Signup";
-    page: "/signup";
   };
   "./routes/Discover.tsx": {
     id: "routes/Discover";
@@ -60,6 +56,10 @@ type RouteFiles = {
     id: "routes/Favorites";
     page: "/favorites";
   };
+  "./routes/Signup.tsx": {
+    id: "routes/Signup";
+    page: "/signup";
+  };
   "./routes/Login.tsx": {
     id: "routes/Login";
     page: "/login";
@@ -70,9 +70,9 @@ type RouteModules = {
   "root": typeof import("./src/app/root.tsx");
   "layouts/sidebar": typeof import("./src/app/./layouts/sidebar.tsx");
   "routes/Home": typeof import("./src/app/./routes/Home.tsx");
-  "routes/Signup": typeof import("./src/app/./routes/Signup.tsx");
   "routes/Discover": typeof import("./src/app/./routes/Discover.tsx");
   "routes/Profile": typeof import("./src/app/./routes/Profile.tsx");
   "routes/Favorites": typeof import("./src/app/./routes/Favorites.tsx");
+  "routes/Signup": typeof import("./src/app/./routes/Signup.tsx");
   "routes/Login": typeof import("./src/app/./routes/Login.tsx");
 };
