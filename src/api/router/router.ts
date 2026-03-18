@@ -1,10 +1,12 @@
+import multer from "multer";
 import { Router } from "express";
 import { client } from "../db/index.ts";
 import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
-const { JsonWebTokenError } = jwt;
 import bcrypt from "bcrypt";
 import { getLatestReleases } from "../scraper.ts";
+const upload = multer({ dest: "uploads/" });
+const { JsonWebTokenError } = jwt;
 
 export const router = Router();
 
@@ -102,12 +104,67 @@ router.post("/login", async (req, res) => {
   return res.status(200).json({ message: "Login successful", token });
 });
 
-router.post("/upload-pfp", async (req, res) => {
-  const { filePath } = req.body;
-  try {
-    await cloudinary.uploader.upload(filePath);
-    res.status(201).json({ message: "Image uploaded successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Error uploading image" });
+router.post("/update-pfp", upload.single("pfp"), async (req, res) => {
+  const file = req.file;
+
+  const { email } = req.body;
+
+  if (!file) return res.status(400).json({ message: "No file chosen" });
+
+  const uploadResult = await cloudinary.uploader.upload(file.path, {
+    public_id: "profile_pictures",
+  });
+
+  const matchingUser = await client
+    .from("users")
+    .select("user_id")
+    .eq("email", email)
+    .single();
+
+  if (!matchingUser.data)
+    return res
+      .status(404)
+      .json({ message: "User associated with the profile_picture not found" });
+
+  await client.from("profile_pictures").upsert({
+    user_id_fk: matchingUser.data.user_id,
+    url: uploadResult.secure_url,
+  });
+
+  return res.status(200).json({
+    message: "Profile Picture uploaded successfully",
+    url: uploadResult.secure_url,
+  });
+});
+router.patch("/update-mail/:email", async (req, res) => {
+  const { email } = req.params;
+  const { newEmail } = req.body;
+
+  const existingUser = await client
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
+
+  if (!existingUser.data) {
+    return res.status(404).json({ message: "User not found" });
   }
+  const { data, error } = await client
+    .from("users")
+    .update({ email: newEmail })
+    .eq("email", email)
+    .select()
+    .single();
+
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+  const newToken = jwt.sign(
+    { email: data.email, hash_pass: data.hash_pass },
+    process.env.JWT_SECRET!,
+    { expiresIn: "1d" },
+  );
+  return res
+    .status(200)
+    .json({ message: "Email updated successfully", token: newToken });
 });
