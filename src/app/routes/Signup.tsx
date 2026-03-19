@@ -119,7 +119,7 @@ export default function Signup() {
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" aria-hidden="true" />
                     ) : (
-                        <Eye className="h-4 w-4" aria-hidden="true" />
+                      <Eye className="h-4 w-4" aria-hidden="true" />
                     )}
                   </Button>
                 </div>

@@ -15,7 +15,7 @@ import {
 } from "@/ui/sidebar";
 import { ArrowLeft, ArrowRight, Bell, LogOut, Search } from "lucide-react";
 import { Button } from "@/ui/Button";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { getUserFromServer } from "@/storage/getUserFromServer";
 import Cookies from "js-cookie";
 
@@ -57,9 +57,10 @@ export default function SidebarLayout({ loaderData }: Route.ComponentProps) {
     navigate(0);
   }
 
-  function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleSearch(e: ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
   }
+  
   return (
     <SidebarProvider>
       <Sidebar position="left">

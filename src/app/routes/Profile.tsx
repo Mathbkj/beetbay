@@ -1,3 +1,4 @@
+import {parseFormData, type FileUpload} from "@remix-run/form-data-parser";
 import type { Route } from "../routes/+types/Profile";
 import { Uploader } from "@/components/Uploader";
 import { getUserFromServer } from "@/storage/getUserFromServer";
@@ -8,12 +9,27 @@ export async function loader({ request }: Route.LoaderArgs) {
   return { user: data };
 }
 
-export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
+export async function clientAction({ request }: Route.ClientActionArgs) {
 
-  console.log(formData);
 
-  return { newEmail: formData.get("new_email") };
+  const uploadHandler = async(fileUpload:FileUpload)=>{
+    if(fileUpload.fieldName === "pfp" && fileUpload.type.startsWith("image/")){    
+      const response = await fetch("http://localhost:3000/api/update-pfp",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:fileUpload
+      })
+  }
+}
+
+  const formData = await parseFormData(request,uploadHandler);
+
+  const newEmail = formData.get("new_email");
+
+  return {newEmail,}
+  
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {

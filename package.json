@@ -19,6 +19,8 @@
     "@dotenvx/dotenvx": "^1.52.0",
     "@react-router/dev": "^7.13.1",
     "@react-router/node": "^7.13.1",
+    "@remix-run/file-storage": "^0.13.3",
+    "@remix-run/form-data-parser": "^0.15.0",
     "@splidejs/react-splide": "^0.7.12",
     "@supabase/supabase-js": "^2.98.0",
     "@tailwindcss/vite": "^4.2.1",

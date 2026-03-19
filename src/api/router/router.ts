@@ -5,6 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { getLatestReleases } from "../scraper.ts";
+import { authMiddleware } from "../middlewares/authMiddleware.ts";
 const upload = multer({ dest: "uploads/" });
 const { JsonWebTokenError } = jwt;
 
@@ -104,37 +105,34 @@ router.post("/login", async (req, res) => {
   return res.status(200).json({ message: "Login successful", token });
 });
 
-router.post("/update-pfp", upload.single("pfp"), async (req, res) => {
-  const file = req.file;
+router.post("/update-pfp", authMiddleware, async (req, res) => {
 
-  const { email } = req.body;
+  console.log(req.body);
 
-  if (!file) return res.status(400).json({ message: "No file chosen" });
+  // const uploadResult = await cloudinary.uploader.upload(file.path, {
+  //   public_id: "profile_pictures",
+  // });
 
-  const uploadResult = await cloudinary.uploader.upload(file.path, {
-    public_id: "profile_pictures",
-  });
+  // const matchingUser = await client
+  //   .from("users")
+  //   .select("user_id")
+  //   .eq("email", email)
+  //   .single();
 
-  const matchingUser = await client
-    .from("users")
-    .select("user_id")
-    .eq("email", email)
-    .single();
+  // if (!matchingUser.data)
+  //   return res
+  //     .status(404)
+  //     .json({ message: "User associated with the profile_picture not found" });
 
-  if (!matchingUser.data)
-    return res
-      .status(404)
-      .json({ message: "User associated with the profile_picture not found" });
+  // await client.from("profile_pictures").upsert({
+  //   user_id_fk: matchingUser.data.user_id,
+  //   url: uploadResult.secure_url,
+  // });
 
-  await client.from("profile_pictures").upsert({
-    user_id_fk: matchingUser.data.user_id,
-    url: uploadResult.secure_url,
-  });
-
-  return res.status(200).json({
-    message: "Profile Picture uploaded successfully",
-    url: uploadResult.secure_url,
-  });
+  // return res.status(200).json({
+  //   message: "Profile Picture uploaded successfully",
+  //   url: uploadResult.secure_url,
+  // });
 });
 
 router.get("/favorite-songs/:email", async (req, res) => {
