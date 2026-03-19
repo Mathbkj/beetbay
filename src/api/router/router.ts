@@ -136,6 +136,43 @@ router.post("/update-pfp", upload.single("pfp"), async (req, res) => {
     url: uploadResult.secure_url,
   });
 });
+
+router.get("/favorite-songs/:email", async (req, res) => {
+  const { email } = req.params;
+
+  const { data, error } = await client
+    .from("users")
+    .select("favorite_songs")
+    .eq("email", email)
+    .single();
+
+  if (error)
+    return res
+      .status(400)
+      .json({ message: `Error fetching favorite songs for user ${email}` });
+  return res.status(200).json({
+    message: "Favorite songs fetched successfully",
+    favoriteSongs: data.favorite_songs,
+  });
+});
+router.post("/favorite-songs", async (req, res) => {
+  const { email, favoriteSongs } = req.body;
+
+  const { error } = await client
+    .from("users")
+    .update({ favorite_songs: favoriteSongs })
+    .eq("email", email)
+    .select()
+    .single();
+  if (error)
+    return res
+      .status(400)
+      .json({ message: `Error updating favorite songs for user ${email}` });
+  return res
+    .status(204)
+    .json({ message: "Favorite songs updated successfully" });
+});
+
 router.patch("/update-mail/:email", async (req, res) => {
   const { email } = req.params;
   const { newEmail } = req.body;

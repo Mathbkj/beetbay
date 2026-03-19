@@ -4,20 +4,24 @@ import { formatTime, getCookiesFromReq, highlightText } from "@/lib/utils";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { ISong } from "../types/ISong";
 import {
-  AudioLines, Clock, Headphones,
+  AudioLines,
+  Clock,
+  Headphones,
   Heart,
   ListMusic,
   Pause,
   Play,
-  Repeat1, Shuffle,
+  Repeat1,
+  Shuffle,
   StepBack,
-  StepForward
+  StepForward,
 } from "lucide-react";
 import { Button } from "@/ui/Button";
 import { SoundBar } from "../components/SoundBar";
 import { getSongs } from "@/storage/getSongs";
 import { redirect } from "react-router";
 import { toast } from "sonner";
+import { IAPIResponse } from "@/types/IAPIResponse";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // const cookie = request.headers.get("cookie");
@@ -46,6 +50,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { songs, email } = loaderData;
+  const songListRef = useRef<HTMLDivElement>(null);
   const dashboardRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [search, setSearch] = useState("");
@@ -57,7 +62,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const [isHeartSelected, setIsHeartSelected] = useState<Set<number>>(
     new Set(),
   );
-  const [showAll,setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   function handleTimeUpdate(audio: HTMLAudioElement) {
     setCurrentTime(audio.currentTime);
@@ -130,22 +135,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       ? `${song.title} removed from favorites!`
       : `${song.title} added to favorites!`;
 
-    const response = await fetch("http://localhost:3000/api/favorite-songs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        songTitle: song.title,
-        isFavorited: !isFavorited,
-      }),
-    });
-
     toast.success(message);
   }
-  function toggleShowAll(){
-    setShowAll(prev => !prev);
+  function toggleShowAll() {
+    if (!songListRef.current) return;
+    setShowAll((prev) => !prev);
   }
   // currentSong + isRepeating useEffect
   useEffect(() => {
@@ -213,6 +207,35 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       }
     });
   }, [search]);
+
+  useEffect(() => {
+    if (!songListRef.current || !showAll) return;
+    window.scrollTo({
+      top: songListRef.current.offsetTop - 100,
+      behavior: "smooth",
+    });
+  }, [showAll]);
+
+  useEffect(() => {
+    const likedSongs = Array.from(isHeartSelected).map((index) => songs[index]);
+    (async () => {
+      const response = await fetch("http://localhost:3000/api/favorite-songs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, favoriteSongs: likedSongs }),
+      });
+      if (!response.ok) {
+        const data: IAPIResponse = await response.json();
+        toast.error(`Failed to update favorite songs: ${data.message}`);
+        return;
+      }
+      const data: IAPIResponse = await response.json();
+      toast.success(data.message);
+    })();
+  }, [isHeartSelected]);
+
   return (
     <div ref={dashboardRef} className="font-[Manrope] min-h-screen bg-black">
       <main className="flex flex-col place-content-center place-items-center bg-black text-white min-h-screen mr-67.5 gap-6 p-6">
@@ -268,8 +291,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             </div>
             <div className="w-full flex justify-between items-center">
               <h1 className="text-xl font-bold">Popular Releases</h1>
-              <Button onClick={toggleShowAll} className="text-primary hover:text-lighter">
-                See All
+              <Button variant="ghost" onClick={toggleShowAll}>
+                {showAll ? "Show Less" : "Show All"}
               </Button>
             </div>
           </div>
@@ -281,71 +304,81 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <audio ref={audioRef}>
               <source src={currentSong?.audioSrc} />
             </audio>
-            <ul className="flex flex-col justify-start items-start min-h-fit gap-4 list-none">
-              {(() => {
-                if (!songs) return null;
-                const midpoint = Math.ceil(songs.length / 2);
-                const firstHalf = songs.slice(0, midpoint);
-                const secondHalf = songs.slice(midpoint);
-                const renderSong = (song: ISong, index: number) => (
-                  <li
-                    key={song.title}
-                    className="flex flex-col gap-4 relative rounded-xl"
-                  >
-                    <div className="flex justify-center items-center gap-19">
-                      <div className="flex justify-center items-center gap-6">
-                        <span className="text-xs">{index + 1}</span>
-                        <div className="flex flex-row-reverse justify-center items-center gap-4">
-                          <audio>
-                            <source src={song.audioSrc} />
-                          </audio>
-                          <span className="song-title text-xs w-40 truncate">
-                            {song.title}
-                          </span>
-                          <img
-                            width={118}
-                            height={118}
-                            src={song.imgSrc}
-                            className="song-img w-29.5 h-29.5 rounded-xl"
-                          />
+            <div
+              ref={songListRef}
+              data-is-shown={showAll}
+              className="transition-all duration-500 ease-in-out overflow-hidden"
+            >
+              <ul className="flex flex-col justify-start items-start min-h-fit gap-4 list-none">
+                {(() => {
+                  if (!songs) return null;
+                  const midpoint = Math.ceil(songs.length / 2);
+                  const firstHalf = songs.slice(0, midpoint);
+                  const secondHalf = songs.slice(midpoint);
+                  const renderSong = (song: ISong, index: number) => (
+                    <li
+                      key={song.title}
+                      className="flex flex-col gap-4 relative rounded-xl"
+                    >
+                      <div className="flex justify-center items-center gap-19">
+                        <div className="flex justify-center items-center gap-6">
+                          <span className="text-xs">{index + 1}</span>
+                          <div className="flex flex-row-reverse justify-center items-center gap-4">
+                            <audio>
+                              <source src={song.audioSrc} />
+                            </audio>
+                            <span className="song-title text-xs w-40 truncate">
+                              {song.title}
+                            </span>
+                            <img
+                              width={118}
+                              height={118}
+                              src={song.imgSrc}
+                              className="song-img w-29.5 h-29.5 rounded-xl"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center gap-14">
+                          <div className="flex gap-3">
+                            <Headphones size={18} />
+                            <span className="text-xs">82,756,134</span>
+                          </div>
+                          <div className="flex gap-3">
+                            <Clock size={18} />
+                            <span className="text-xs">00:30</span>
+                          </div>
+                          <Button
+                            data-favorited={isHeartSelected.has(index)}
+                            onClick={() => favoriteMusic(index)}
+                            size="icon"
+                            variant="destructive"
+                            className="group"
+                          >
+                            <Heart className="group-data-[favorited=true]:fill-red-500 group-data-[favorited=true]:animate-quick-jump transition-all" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleCurrentSong}
+                          >
+                            <Play size={24} />
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex justify-center items-center gap-14">
-                        <div className="flex gap-3">
-                          <Headphones size={18} />
-                          <span className="text-xs">82,756,134</span>
-                        </div>
-                        <div className="flex gap-3">
-                          <Clock size={18} />
-                          <span className="text-xs">00:30</span>
-                        </div>
-                        <Button
-                          data-favorited={isHeartSelected.has(index)}
-                          onClick={() => favoriteMusic(index)}
-                          size="icon"
-                          variant="destructive"
-                          className="group"
-                        >
-                          <Heart className="group-data-[favorited=true]:fill-red-500 group-data-[favorited=true]:animate-quick-jump transition-all" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={handleCurrentSong}
-                        >
-                          <Play size={24} />
-                        </Button>
-                      </div>
-                    </div>
-                  </li>
-                );
-                const rendered = [
-                  ...firstHalf.map((song, idx) => renderSong(song, idx)),
-                  ...(showAll ? secondHalf.map((song, idx) => renderSong(song, idx + midpoint)) : []),
-                ];
-                return rendered;
-              })()}
-            </ul>
+                    </li>
+                  );
+                  const rendered = [
+                    ...firstHalf.map((song, idx) => renderSong(song, idx)),
+                    ...(showAll
+                      ? secondHalf.map((song, idx) =>
+                          renderSong(song, idx + midpoint),
+                        )
+                      : []),
+                  ];
+                  return rendered;
+                })()}
+              </ul>
+            </div>
           </div>
         </section>
       </main>
@@ -382,7 +415,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <Button onClick={goBackAudio} size="icon">
               <StepBack size={24} />
             </Button>
-            <Button onClick={toggleAudio} variant="outline" size="icon">
+            <Button onClick={toggleAudio} variant="ghost" size="icon">
               {isPaused ? <Play size={24} /> : <Pause size={24} />}
             </Button>
             <Button onClick={goForwardAudio} size="icon">

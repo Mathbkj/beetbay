@@ -8,7 +8,6 @@ export const buttonVariants = tv({
       primary:
         "bg-primary text-dark hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]",
       filled: "bg-primary text-white hover:bg-light hover:text-dark",
-      outline: "bg-transparent text-primary border border-black",
       destructive:
         "bg-transparent text-destructive focus:outline-destructive hover:bg-destructive/10",
       ghost:
