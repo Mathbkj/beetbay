@@ -1,4 +1,3 @@
-import multer from "multer";
 import { Router } from "express";
 import { client } from "../db/index.ts";
 import { v2 as cloudinary } from "cloudinary";
@@ -6,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { getLatestReleases } from "../scraper.ts";
 import { authMiddleware } from "../middlewares/authMiddleware.ts";
-const upload = multer({ dest: "uploads/" });
+import { getRadioStations } from "../radio.ts";
 const { JsonWebTokenError } = jwt;
 
 export const router = Router();
@@ -40,6 +39,10 @@ router.get("/top-songs", async (req, res) => {
       return res.status(401).json({ message: "Invalid or expired token." });
   }
 });
+router.get("/stations",async(req,res)=>{
+  const stations = await getRadioStations();
+  res.status(200).json({ message: "Fetched radio stations successfully", stations });
+})
 router.post("/register", async (req, res) => {
   const { email, password } = req.body;
   try {
