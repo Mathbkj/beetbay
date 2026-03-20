@@ -56,40 +56,40 @@ async function changeMail(
     error: (err) => `Error updating email:${err.message}`,
   });
 }
-async function changePfp(
-  email: string,
-  file: File,
-  reloadFn: NavigateFunction,
-) {
-  const formData = new FormData();
+// async function changePfp(
+//   email: string,
+//   file: File,
+//   reloadFn: NavigateFunction,
+// ) {
+//   const formData = new FormData();
 
-  formData.append("pfp", file);
-  formData.append("email", email);
+//   formData.append("pfp", file);
+//   formData.append("email", email);
 
-  const response = await fetch("http://localhost:3000/api/update-pfp", {
-    method: "POST",
-    body: formData,
-  });
+//   const response = await fetch("http://localhost:3000/api/update-pfp", {
+//     method: "POST",
+//     body: formData,
+//   });
 
-  if (!response.ok) {
-    const data: IAPIResponse = await response.json();
-    throw new Error(data.message);
-  }
-  const data: IAPIResponse = await response.json();
-  Cookies.set("jwt_token", data.token!, { expires: 1 });
+//   if (!response.ok) {
+//     const data: IAPIResponse = await response.json();
+//     throw new Error(data.message);
+//   }
+//   const data: IAPIResponse = await response.json();
+//   Cookies.set("jwt_token", data.token!, { expires: 1 });
 
-  const okPromise = new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve();
-      reloadFn(0);
-    }, 2000);
-  });
-  toast.promise(okPromise, {
-    loading: "Updating profile picture...",
-    success: "Profile picture successfully updated!",
-    error: (err) => `Error updating profile picture:${err.message}`,
-  });
-}
+//   const okPromise = new Promise<void>((resolve) => {
+//     setTimeout(() => {
+//       resolve();
+//       reloadFn(0);
+//     }, 2000);
+//   });
+//   toast.promise(okPromise, {
+//     loading: "Updating profile picture...",
+//     success: "Profile picture successfully updated!",
+//     error: (err) => `Error updating profile picture:${err.message}`,
+//   });
+// }
 
 export function Uploader({ email }: IUser) {
   const navigate = useNavigate();
@@ -126,7 +126,7 @@ export function Uploader({ email }: IUser) {
       <fetcher.Form
         method="post"
         onSubmit={(ev) =>
-          fetcher.submit(ev.currentTarget, { encType: "multipart/form-data" })
+          fetcher.submit(ev.currentTarget, { encType: "application/json" })
         }
       >
         <Field>
@@ -201,7 +201,7 @@ export function Uploader({ email }: IUser) {
                       placeholder="Enter your new email"
                       // value={email}
                       // onChange={handleMailChange}
-                    />
+                      />
                   </Field>
                   <DialogFooter>
                     <DialogClose asChild>

@@ -17,6 +17,9 @@ type Pages = {
   "/discover": {
     params: {};
   };
+  "/radio": {
+    params: {};
+  };
   "/profile": {
     params: {};
   };
@@ -34,11 +37,11 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/discover" | "/profile" | "/favorites" | "/signup" | "/login";
+    page: "/" | "/discover" | "/radio" | "/profile" | "/favorites" | "/signup" | "/login";
   };
   "./layouts/sidebar.tsx": {
     id: "layouts/sidebar";
-    page: "/" | "/discover" | "/profile" | "/favorites";
+    page: "/" | "/discover" | "/radio" | "/profile" | "/favorites";
   };
   "./routes/Home.tsx": {
     id: "routes/Home";
@@ -47,6 +50,10 @@ type RouteFiles = {
   "./routes/Discover.tsx": {
     id: "routes/Discover";
     page: "/discover";
+  };
+  "./routes/Radio.tsx": {
+    id: "routes/Radio";
+    page: "/radio";
   };
   "./routes/Profile.tsx": {
     id: "routes/Profile";
@@ -71,6 +78,7 @@ type RouteModules = {
   "layouts/sidebar": typeof import("./src/app/./layouts/sidebar.tsx");
   "routes/Home": typeof import("./src/app/./routes/Home.tsx");
   "routes/Discover": typeof import("./src/app/./routes/Discover.tsx");
+  "routes/Radio": typeof import("./src/app/./routes/Radio.tsx");
   "routes/Profile": typeof import("./src/app/./routes/Profile.tsx");
   "routes/Favorites": typeof import("./src/app/./routes/Favorites.tsx");
   "routes/Signup": typeof import("./src/app/./routes/Signup.tsx");

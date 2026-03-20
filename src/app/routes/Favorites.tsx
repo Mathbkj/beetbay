@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { IAPIResponse } from "@/types/IAPIResponse";
 import { Button } from "@/ui/Button";
 import { useEffect, useRef, useState } from "react";
+import { SoundBar } from "@/components/SoundBar";
 import { ISong } from "@/types/ISong";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -176,7 +177,7 @@ export default function Favorites({ loaderData }: Route.ComponentProps) {
           </div>
           {/* SoundBar */}
           <div className="w-full mt-2">
-            {/* @ts-ignore */}
+           
             <SoundBar currentTime={currentTime} duration={duration} onSeek={handleSeek} />
           </div>
         </footer>

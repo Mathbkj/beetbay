@@ -4,6 +4,7 @@ export default [
   layout("./layouts/sidebar.tsx", [
     index("./routes/Home.tsx"),
     route("discover", "./routes/Discover.tsx"),
+    route("radio", "./routes/Radio.tsx"),
     route("profile", "./routes/Profile.tsx"),
     route("favorites", "./routes/Favorites.tsx"),
   ]),
