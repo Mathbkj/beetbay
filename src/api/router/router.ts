@@ -39,10 +39,12 @@ router.get("/top-songs", async (req, res) => {
       return res.status(401).json({ message: "Invalid or expired token." });
   }
 });
-router.get("/stations",async(req,res)=>{
+router.get("/stations", async (req, res) => {
   const stations = await getRadioStations();
-  res.status(200).json({ message: "Fetched radio stations successfully", stations });
-})
+  res
+    .status(200)
+    .json({ message: "Fetched radio stations successfully", stations });
+});
 router.post("/register", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -109,7 +111,6 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/update-pfp", authMiddleware, async (req, res) => {
-
   console.log(req.body);
 
   // const uploadResult = await cloudinary.uploader.upload(file.path, {
@@ -137,6 +138,23 @@ router.post("/update-pfp", authMiddleware, async (req, res) => {
   //   url: uploadResult.secure_url,
   // });
 });
+router.post("/favorite-songs", async (req, res) => {
+  const { email, favoriteSongs } = req.body;
+
+  const { error } = await client
+    .from("users")
+    .update({ favorite_songs: favoriteSongs })
+    .eq("email", email)
+    .select()
+    .single();
+  if (error)
+    return res
+      .status(400)
+      .json({ message: `Error updating favorite songs for user ${email}` });
+  return res
+    .status(204)
+    .json({ message: "Favorite songs updated successfully" });
+});
 
 router.get("/favorite-songs/:email", async (req, res) => {
   const { email } = req.params;
@@ -155,23 +173,6 @@ router.get("/favorite-songs/:email", async (req, res) => {
     message: "Favorite songs fetched successfully",
     favoriteSongs: data.favorite_songs,
   });
-});
-router.post("/favorite-songs", async (req, res) => {
-  const { email, favoriteSongs } = req.body;
-
-  const { error } = await client
-    .from("users")
-    .update({ favorite_songs: favoriteSongs })
-    .eq("email", email)
-    .select()
-    .single();
-  if (error)
-    return res
-      .status(400)
-      .json({ message: `Error updating favorite songs for user ${email}` });
-  return res
-    .status(204)
-    .json({ message: "Favorite songs updated successfully" });
 });
 
 router.patch("/update-mail/:email", async (req, res) => {
